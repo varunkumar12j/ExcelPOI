@@ -1,0 +1,39 @@
+package dataDriver;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class ExcelDataDriver {
+
+	private static XSSFWorkbook workbook;
+	private static XSSFSheet sheet;	
+
+	public static void main(String[] args) throws FileNotFoundException, IOException {
+		workbook = new XSSFWorkbook(new FileInputStream("Book1.xlsx"));
+		int numberofSheets = workbook.getNumberOfSheets();
+		for (int i = 0; i < numberofSheets; i++) {
+			if (workbook.getSheetName(i).equalsIgnoreCase("Sheet1")) {
+				sheet = workbook.getSheetAt(i);
+				
+				Iterator<Row> rows = sheet.iterator();
+				while (rows.hasNext()) {
+					Row row = rows.next();
+					Iterator<Cell> cells = row.iterator();
+					while(cells.hasNext()) {
+						Cell cell = cells.next();
+						System.out.println(cell.getStringCellValue());
+					}
+				}
+				break;
+			}
+		}
+	}
+
+}
